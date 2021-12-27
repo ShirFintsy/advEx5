@@ -88,7 +88,7 @@ public:
 
 class detAnomal:public Command {
     virtual void execute)(Information info) {
-
+    //...
 }
 };
 
