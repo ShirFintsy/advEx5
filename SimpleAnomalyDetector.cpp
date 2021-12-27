@@ -20,7 +20,10 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
      * find the correlated features in the time series- checking every couple of features.
      */
     for (int i = 0; i < ts.get_num_columns(); ++i) {
-        float m = 0.9, h = 0.5;
+        // for case the client ask for new threshold in command 3:
+        float m = user_threshold == 100 ? 0.9 : user_threshold;
+
+        float h = 0.5;
 
         // create array from info in feature 1:
         float *arrayI = from_vector_to_array(ts.get_column_by_loc(i));

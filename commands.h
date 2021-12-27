@@ -39,6 +39,7 @@ public:
 // you may add here helper classes
 struct Information {
     float threshold = 0.9;
+    float numColumn;
 };
 
 // you may edit this class
@@ -87,9 +88,13 @@ public:
 };
 
 class detAnomal:public Command {
-    virtual void execute)(Information info) {
-    //...
-}
+    virtual void execute(Information &info) {
+    HybridAnomalyDetector detector;
+    TimeSeries tsTrain("tsTrain.csv");
+    TimeSeries tsTest("tsTest.csv");
+    detector.setUserThreshold(info.threshold);
+    detector.learnNormal(tsTrain);
+    }
 };
 
 #endif /* COMMANDS_H_ */
