@@ -20,22 +20,50 @@ public:
     virtual void read(float* f)=0;
     virtual ~DefaultIO(){}
 
-    // you may add additional methods here
 };
 
-// you may add here helper classes
-
-
-// you may edit this class
 class Command{
     DefaultIO* dio;
 public:
-    Command(DefaultIO* dio):dio(dio){}
+    string description;
+    Command(DefaultIO* dio, string des):dio(dio){}
     virtual void execute()=0;
     virtual ~Command(){}
 };
 
-// implement here your command classes
+// I don't know what we need to put here- but this is the information we need
+// to share with all commands classes
+struct commonInfo {
+    commonInfo();
+};
+
+class UploadCVS:public Command {
+    // Constructor:
+    UploadCVS(DefaultIO dio):Command(dio,"upload a time series csv file"){}
+    void execute(commonInfo* info) {
+
+    }
+};
+class Settings:public Command {
+    // Constructor:
+    Settings(DefaultIO dio): Command(dio, "algorithm settings"){}
+};
+class DetectAnomalies:public Command {
+    // Constructor:
+    DetectAnomalies(DefaultIO dio): Command(dio, "detect anomalies"){}
+};
+class Result:public Command {
+    // Constructor:
+    Result(DefaultIO dio): Command(dio, "display results"){}
+};
+class UploadAnomalies:public Command {
+    // Constructor:
+    UploadAnomalies(DefaultIO dio): Command(dio, "upload anomalies and analyze results"){}
+};
+class Exit:public Command {
+    // Constructor:
+    Exit(DefaultIO dio): Command(dio, "exit"){}
+};
 
 
 
