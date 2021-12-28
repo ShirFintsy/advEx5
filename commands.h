@@ -39,7 +39,7 @@ public:
 // you may add here helper classes
 struct Information {
     float threshold = 0.9;
-    float numColumn;
+    vector<AnomalyReport> detectReports;
 };
 
 // you may edit this class
@@ -88,13 +88,35 @@ public:
 };
 
 class detAnomal:public Command {
+public:
+    detAnomal(DefaultIO* dio):Command(dio,"settings"){}
     virtual void execute(Information &info) {
     HybridAnomalyDetector detector;
     TimeSeries tsTrain("tsTrain.csv");
     TimeSeries tsTest("tsTest.csv");
     detector.setUserThreshold(info.threshold);
     detector.learnNormal(tsTrain);
+    info.detectReports = detector.detect(tsTest);
+    dio->write("anomaly detection complete.\n");
     }
 };
+
+class Result:public Command {
+public:
+    // Constructor:
+    Result(DefaultIO* dio): Command(dio, "display results"){}
+    virtual void execute(Information &info) {
+        for (AnomalyReport report : info.detectReports) {
+            const long timeStep = report.timeStep;
+            const string description = report.description;
+            dio->write((float)timeStep);
+            dio->write("\t");
+            dio->write(description);
+            dio->write("\n");
+        }
+        dio->write("Done.\n");
+    }
+};
+
 
 #endif /* COMMANDS_H_ */
