@@ -12,6 +12,7 @@ CLI::CLI(DefaultIO* dio) {
 }
 
 void CLI::start(){
+    commonInfo info;
     int index = 0;
     while (index != 5) {
         dio->write("Welcome To the Anomaly Detection Server.");
@@ -23,7 +24,7 @@ void CLI::start(){
         string opt = dio->read();
         index= opt[0] - '0' - 1;
         if(index >= 0 && index <= 6)
-            commands[index]->execute(&sharedState);
+            commands[index]->execute(&info);
     }
 
 }
