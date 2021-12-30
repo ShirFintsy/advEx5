@@ -9,8 +9,8 @@
 using namespace std;
 
 class CLI {
+    vector<Command*> commands;
     DefaultIO* dio;
-    // you can add data members
 public:
     CLI(DefaultIO* dio);
     void start();

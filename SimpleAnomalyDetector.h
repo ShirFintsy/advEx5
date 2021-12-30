@@ -38,6 +38,10 @@ public:
         return cf;
     }
 
+    void setUserThreshold(float num) {
+        user_threshold = num;
+    }
+
     void create_cor_feature_sim(float pear, int feature1, int feature2,const TimeSeries &ts);
     virtual correlatedFeatures create_cor_feature_cir(float pear, int feature1, int feature2,const TimeSeries &ts);
     virtual AnomalyReport check_if_inside(const TimeSeries &ts, const correlatedFeatures &i);
