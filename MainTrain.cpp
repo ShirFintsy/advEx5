@@ -1,7 +1,7 @@
 /*
  * run2.cpp
  *
- *  Created on: 8 áãöî× 2019
+ *  Created on: 8 ï¿½ï¿½ï¿½ï¿½ï¿½ 2019
  *      Author: Eli
  */
 
@@ -78,12 +78,12 @@ void check(string outputFile,string expectedOutputFile){
 }
 
  //small test
-int main(){
-	STDtest std("input.txt","output.txt");
-	CLI cli(&std);
-	cli.start();
-	std.close();
-	check("output.txt","expectedOutput.txt");
-	cout<<"done"<<endl;
-	return 0;
-}
+//int main(){
+//	STDtest std("input.txt","output.txt");
+//	CLI cli(&std);
+//	cli.start();
+//	std.close();
+//	check("output.txt","expectedOutput.txt");
+//	cout<<"done"<<endl;
+//	return 0;
+//}
