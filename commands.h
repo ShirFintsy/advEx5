@@ -50,7 +50,7 @@ struct commonInfo {
     vector<AnomalyReport> detectReports;
     vector<SerialTimeStep> stp;
     int fileSize;
-    commonInfo();
+    commonInfo(){};
 };
 
 class Command {
@@ -68,6 +68,28 @@ public:
     virtual void execute(commonInfo *info) = 0;
 
     virtual ~Command() {}
+
+    int* get_range(string s){
+        std::string delimiter = ",";
+        size_t pos = 0;
+        std::string token; // first
+        while ((pos = s.find(delimiter)) != std::string::npos) {
+            token = s.substr(0, pos);
+            s.erase(0, pos + delimiter.length());
+        }
+        int start = stoi(token);
+        int end = stoi(s);
+        static int range[2];
+        range[0] = start;
+        range[1] = end;
+        return range;
+    }
+    int get_N(vector<int*> clientRange){
+        int sum = 0;
+        for (int* curr: clientRange) {
+            sum += curr[1] - curr[0] + 1;
+        }return sum;
+    }
 };
 
 
@@ -173,7 +195,7 @@ public:
             clientRange.push_back(range);
             p++;
         }
-        dio->write("Upload complete");
+        dio->write("Upload complete\n");
 
         int FP=0, TP=0;
         for (SerialTimeStep time: info->stp){
@@ -209,25 +231,7 @@ public:
     }
 
 };
-int* get_range(string s){
-    std::string delimiter = ",";
-    size_t pos = 0;
-    std::string token; // first
-    while ((pos = s.find(delimiter)) != std::string::npos) {
-        token = s.substr(0, pos);
-        s.erase(0, pos + delimiter.length());
-    }
-    int start = stoi(token);
-    int end = stoi(s);
-    int range[] = {start, end};
-    return range;
-}
-int get_N(vector<int*> clientRange){
-    int sum = 0;
-    for (int* curr: clientRange) {
-        sum += curr[1] - curr[0] + 1;
-    }return sum;
-}
+
 
 
 #endif /* COMMANDS_H_ */
