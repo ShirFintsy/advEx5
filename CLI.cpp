@@ -30,7 +30,7 @@ void CLI::start(){
 }
 
 CLI::~CLI() {
-    for (Command com : commands) {
-        delete com;
+    for(int i = 0; i < commands.size(); i++) {
+        delete commands[i];
     }
 }

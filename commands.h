@@ -39,20 +39,6 @@ public:
     }
 };
 
-class Command{
-protected:
-    DefaultIO* dio;
-public:
-    string description;
-    Command(DefaultIO* d, string des) {
-        dio = d;
-        description = des;
-    }
-    //Command(DefaultIO* dio, string des):dio(dio),description(des){}
-    virtual void execute()=0;
-    virtual ~Command(){}
-};
-
 struct SerialTimeStep {
     int start;
     int end;
@@ -67,8 +53,28 @@ struct commonInfo {
     commonInfo();
 };
 
+class Command {
+protected:
+    DefaultIO *dio;
+public:
+    string description;
+
+    Command(DefaultIO *d, string des) {
+        dio = d;
+        description = des;
+    }
+
+    //Command(DefaultIO* dio, string des):dio(dio),description(des){}
+    virtual void execute(commonInfo *info) = 0;
+
+    virtual ~Command() {}
+};
+
+
+
 class UploadCVS:public Command {
     // Constructor:
+public:
     UploadCVS(DefaultIO* dio):Command(dio,"upload a time series csv file"){}
     virtual void execute(commonInfo* info) {
         dio->write("Please upload your local train CSV file.\n");
@@ -81,6 +87,7 @@ class UploadCVS:public Command {
     }
 };
 class Settings:public Command {
+public:
     // Constructor:
     Settings(DefaultIO* dio): Command(dio, "algorithm settings"){}
     virtual void execute(commonInfo* info) {
@@ -97,6 +104,7 @@ class Settings:public Command {
     }
 };
 class DetectAnomalies:public Command {
+public:
     // Constructor:
     DetectAnomalies(DefaultIO* dio): Command(dio, "detect anomalies"){}
     virtual void execute(commonInfo* info) {
@@ -134,6 +142,7 @@ class DetectAnomalies:public Command {
     }
 };
 class Result:public Command {
+public:
     // Constructor:
     Result(DefaultIO* dio): Command(dio, "display results"){}
     virtual void execute(commonInfo* info) {
@@ -149,6 +158,7 @@ class Result:public Command {
     }
 };
 class UploadAnomalies:public Command {
+public:
     // Constructor:
     UploadAnomalies(DefaultIO* dio): Command(dio, "upload anomalies and analyze results"){}
     virtual void execute(commonInfo* info) {
@@ -191,10 +201,11 @@ class UploadAnomalies:public Command {
     }
 };
 class Exit:public Command {
+public:
     // Constructor:
     Exit(DefaultIO* dio): Command(dio, "exit"){}
     virtual void execute(commonInfo* info) {
-
+        return;
     }
 
 };

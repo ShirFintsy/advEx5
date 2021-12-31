@@ -77,13 +77,13 @@ void check(string outputFile,string expectedOutputFile){
 	ex.close();
 }
 
- //small test
-//int main(){
-//	STDtest std("input.txt","output.txt");
-//	CLI cli(&std);
-//	cli.start();
-//	std.close();
-//	check("output.txt","expectedOutput.txt");
-//	cout<<"done"<<endl;
-//	return 0;
-//}
+// small test
+int main(){
+	STDtest std("input.txt","output.txt");
+	CLI cli(&std);
+	cli.start();
+	std.close();
+	check("output.txt","expectedOutput.txt");
+	cout<<"done"<<endl;
+	return 0;
+}
