@@ -15,18 +15,20 @@ void CLI::start(){
     commonInfo info;
     int index = 0;
     while (index != 5) {
-        dio->write("Welcome To the Anomaly Detection Server.");
-        dio->write("Please choose an option:");
-        for (int i = 0; i < 5; i++) {
+        dio->write("Welcome to the Anomaly Detection Server.\n");
+        dio->write("Please choose an option:\n");
+        for (int i = 1; i <= 6; i++) {
             dio->write(i);
-            dio->write(commands[index]->description);
+            dio->write(".");
+            dio->write(commands[i-1]->description);
+            dio->write("\n");
         }
         string opt = dio->read();
         index= opt[0] - '0' - 1;
         if(index >= 0 && index <= 6)
             commands[index]->execute(&info);
     }
-
+    return;
 }
 
 CLI::~CLI() {

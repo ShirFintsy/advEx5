@@ -28,6 +28,8 @@ struct correlatedFeatures{
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
     vector<correlatedFeatures> cf;
 public:
+    float user_threshold = 100;
+
     SimpleAnomalyDetector();
     virtual ~SimpleAnomalyDetector();
 
@@ -51,6 +53,6 @@ Point** find_points_of_correlated_features (const TimeSeries &ts, string feat1, 
 float* from_vector_to_array(vector<float> feature);
 Line find_linear_reg (const TimeSeries &ts, string feat1, string feat2);
 float max_threshold (Point** points, Line line, int size);
-AnomalyReport check_if_detect(const TimeSeries &ts, const correlatedFeatures &cor);
-
+//AnomalyReport check_if_detect(const TimeSeries &ts, const correlatedFeatures &cor);
+vector<AnomalyReport> check_if_detect(const TimeSeries &ts, const correlatedFeatures &cor);
 #endif /* SIMPLEANOMALYDETECTOR_H_ */

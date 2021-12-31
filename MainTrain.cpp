@@ -79,11 +79,13 @@ void check(string outputFile,string expectedOutputFile){
 
 // small test
 int main(){
-	STDtest std("input.txt","output.txt");
+	STDtest std("C:\\Users\\shirf\\CLionProjects\\advEx5\\input.txt",
+                "C:\\Users\\shirf\\CLionProjects\\advEx5\\output.txt");
 	CLI cli(&std);
 	cli.start();
 	std.close();
-	check("output.txt","expectedOutput.txt");
+	check("C:\\Users\\shirf\\CLionProjects\\advEx5\\output.txt",
+          "C:\\Users\\shirf\\CLionProjects\\advEx5\\expectedOutput.txt");
 	cout<<"done"<<endl;
 	return 0;
 }
