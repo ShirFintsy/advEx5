@@ -73,7 +73,7 @@ public:
 class setThreshold:public Command {
 public:
     setThreshold(DefaultIO* dio):Command(dio,"settings"){}
-    virtual void execute(Information info) {
+    virtual void execute(Information &info) {
         dio->write("The current correlation threshold is: ");
         dio->write(info.threshold);
         dio->write("\n");
