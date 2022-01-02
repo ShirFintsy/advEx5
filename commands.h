@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include <vector>
+#include <iomanip>
 #include "HybridAnomalyDetector.h"
 
 using namespace std;
@@ -28,7 +29,7 @@ public:
         if(!file.is_open()) throw std::runtime_error("Could not open file");
         string reader;
 
-        int numOfLines = -1;
+        int numOfLines = -2;
         while(reader != "done"){
             numOfLines++;
             getline(file, reader);
@@ -84,10 +85,10 @@ public:
         range[1] = end;
         return range;
     }
-    int get_N(vector<int*> clientRange){
+    int get_N(vector<int> clientBegins, vector<int> clientEnds){
         int sum = 0;
-        for (int* curr: clientRange) {
-            sum += curr[1] - curr[0] + 1;
+        for (int i = 0; i < clientEnds.size(); i++) {
+            sum += clientEnds[i] - clientBegins[i] + 1;
         }return sum;
     }
 };
@@ -185,34 +186,44 @@ public:
     // Constructor:
     UploadAnomalies(DefaultIO* dio): Command(dio, "upload anomalies and analyze results"){}
     virtual void execute(commonInfo* info) {
-        dio->write("Please upload your local anomalies file.");
+        dio->write("Please upload your local anomalies file.\n");
         string lineInFile = "";
 
-        vector<int*> clientRange;
+        vector<int> clientBegins;
+        vector<int> clientEnds;
         int p = 0;
         string s;
         while ((s = dio->read()) != "done") {
             int* range = get_range(s);
-            clientRange.push_back(range);
+            clientBegins.push_back(range[0]);
+            clientEnds.push_back(range[1]);
             p++;
         }
         dio->write("Upload complete\n");
 
         int FP=0, TP=0;
         for (SerialTimeStep time: info->stp){
-            for (int* curr: clientRange) {
-                // curr[0]- start, curr[1]- end
-                if ((curr[0] < time.start && curr[1] < time.start) || (curr[0] > time.start && curr[0] > time.end)) {
-                    FP++;
-                }
-                if ((curr[0] <= time.end && curr[1] >= time.end) || (curr[0] <= time.start && curr[1] >= time.start)) {
+            int flag = 0;
+            for (int i = 0; i < clientEnds.size(); i++) {
+                if ((clientBegins[i] <= time.end && clientEnds[i] >= time.end) ||
+                (clientBegins[i] <= time.start && clientEnds[i] >= time.start) ||
+                (clientBegins[i] <= time.start && clientEnds[i] >= time.end) ||
+                (clientBegins[i] >= time.start && clientEnds[i] <= time.end)) {
                     TP++;
+                    flag = 1;
+                    break;
                 }
+
+            } if (flag == 0) {
+                FP++;
             }
         }
+
         float positiveRate = (float) TP / (float) p;
-        float N = (float) info->fileSize - (float) get_N(clientRange);
+        positiveRate = (floor(positiveRate * 1000)) / 1000;
+        float N = (float) info->fileSize - (float) get_N(clientBegins, clientEnds);
         float falseAlarm = (float) FP / N;
+        falseAlarm = (floor(falseAlarm * 1000)) / 1000;
 
         dio->write("True Positive Rate: ");
         dio->write(positiveRate);

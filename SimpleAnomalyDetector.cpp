@@ -129,7 +129,8 @@ float max_threshold (Point** points, Line line, int size) {
             maxThreshold = d;
         }
     }
-    return (float) 1.1 * maxThreshold;
+    maxThreshold *= 1.1;
+    return maxThreshold;
 
 }
 
@@ -175,7 +176,8 @@ vector<AnomalyReport> check_if_detect(const TimeSeries &ts, const correlatedFeat
     // get size of vector of current correlatedFeatures:
     int sizeOfFeature = ts.get_column_by_head(cor.feature1).size();
     // create line of new info from test ts:
-    Line line = find_linear_reg(ts, cor.feature1, cor.feature2);
+    Line line = cor.lin_reg;
+    //Line line = find_linear_reg(ts, cor.feature1, cor.feature2);
 
     for (int i = 0; i < sizeOfFeature; i++) {
         // create point from line cor in feature 1 and line cor in feature 2.
