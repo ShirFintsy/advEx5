@@ -46,7 +46,7 @@ public:
 
     void create_cor_feature_sim(float pear, int feature1, int feature2,const TimeSeries &ts);
     virtual correlatedFeatures create_cor_feature_cir(float pear, int feature1, int feature2,const TimeSeries &ts);
-    virtual AnomalyReport check_if_inside(const TimeSeries &ts, const correlatedFeatures &i);
+    virtual vector<AnomalyReport> check_if_inside(const TimeSeries &ts, const correlatedFeatures &i);
 };
 
 Point** find_points_of_correlated_features (const TimeSeries &ts, string feat1, string feat2);

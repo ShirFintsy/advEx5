@@ -20,10 +20,9 @@ private:
     vector<string> headLines;
     // 2D array of vectors (columns):
     vector<vector<float>> columns;
-
     unsigned int num_columns;
+    string csvName;
 
-    string csvFname;
 public:
     // consturctor:
     TimeSeries(const char* CSVfileName);

@@ -129,7 +129,7 @@ float max_threshold (Point** points, Line line, int size) {
             maxThreshold = d;
         }
     }
-    return 1.1 * maxThreshold;
+    return (float) 1.1 * maxThreshold;
 
 }
 
@@ -144,9 +144,11 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     for (const correlatedFeatures &i : this->cf) {
 
         if (i.isCircleDetect) { // the case of circle detect
-            AnomalyReport s = check_if_inside(ts, i);
-            if (s.timeStep != 0) {
-                reports.push_back(s);
+            vector<AnomalyReport> reportsList = check_if_inside(ts, i);
+            for (AnomalyReport s: reportsList) {
+                if (s.timeStep != 0) {
+                    reports.push_back(s);
+                }
             }
         }
 
@@ -168,21 +170,6 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
  * @param cor - current correlatedFeatures we check the new test info.
  * @return an AnomalyReport if there is an exception, an empty AnomalyReport if there isn't.
  */
-//AnomalyReport check_if_detect(const TimeSeries &ts, const correlatedFeatures &cor) {
-//    // get size of vector of current correlatedFeatures:
-//    int sizeOfFeature = ts.get_column_by_head(cor.feature1).size();
-//    // create line of new info from test ts:
-//    Line line = find_linear_reg(ts, cor.feature1, cor.feature2);
-//
-//    for (int i = 0; i < sizeOfFeature; i++) {
-//        // create point from line cor in feature 1 and line cor in feature 2.
-//        Point p = Point(ts.get_column_by_head(cor.feature1)[i], ts.get_column_by_head(cor.feature2)[i]);
-//
-//        if (cor.threshold < dev(p, line)) {
-//            return AnomalyReport(cor.feature1 + "-" + cor.feature2, i + 1);
-//        }
-//    } return AnomalyReport("", 0);
-//}
 vector<AnomalyReport> check_if_detect(const TimeSeries &ts, const correlatedFeatures &cor) {
     vector<AnomalyReport> reports;
     // get size of vector of current correlatedFeatures:
@@ -192,8 +179,11 @@ vector<AnomalyReport> check_if_detect(const TimeSeries &ts, const correlatedFeat
 
     for (int i = 0; i < sizeOfFeature; i++) {
         // create point from line cor in feature 1 and line cor in feature 2.
-        Point p = Point(ts.get_column_by_head(cor.feature1)[i], ts.get_column_by_head(cor.feature2)[i]);
+        Point p = Point(ts.get_column_by_head(cor.feature1)[i],
+                        ts.get_column_by_head(cor.feature2)[i]);
 
+        //debug:
+        float devi = dev(p, line);
         if (cor.threshold < dev(p, line)) {
             AnomalyReport a(cor.feature1 + "-" + cor.feature2, i + 1);
             reports.push_back(a);
@@ -207,6 +197,9 @@ correlatedFeatures SimpleAnomalyDetector::create_cor_feature_cir(float pear, int
     return c;
 }
 
-AnomalyReport SimpleAnomalyDetector::check_if_inside(const TimeSeries &ts, const correlatedFeatures &i) {
-    return AnomalyReport("", 0);
+vector<AnomalyReport> SimpleAnomalyDetector::check_if_inside(const TimeSeries &ts, const correlatedFeatures &i) {
+    vector<AnomalyReport> nullVec;
+    AnomalyReport a("", 0);
+    nullVec.push_back(a);
+    return nullVec;
 }

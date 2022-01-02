@@ -16,20 +16,22 @@ HybridAnomalyDetector::~HybridAnomalyDetector() {}
  * @param cor - correlatedFeatures object we found in learn normal part.
  * @return an AnomalyReport if there is an exception, an empty AnomalyReport if there isn't.
  */
-AnomalyReport HybridAnomalyDetector::check_if_inside(const TimeSeries &ts, const correlatedFeatures &cor) {
+vector<AnomalyReport> HybridAnomalyDetector::check_if_inside(const TimeSeries &ts, const correlatedFeatures &cor) {
     // get size of vector of current correlatedFeatures:
     int sizeOfFeature = ts.get_column_by_head(cor.feature1).size();
     // create circle of new info from test ts:
     Circle cir = Circle(cor.minCircle.center, cor.threshold);
 
+    vector<AnomalyReport> reports;
     for (int i = 0; i < sizeOfFeature; i++) {
         // create point from line cor in feature 1 and line cor in feature 2.
         Point p = Point(ts.get_column_by_head(cor.feature1)[i], ts.get_column_by_head(cor.feature2)[i]);
 
         if (!is_inside(cir, p)) {
-            return AnomalyReport(cor.feature1 + "-" + cor.feature2, i + 1);
+            AnomalyReport a(cor.feature1 + "-" + cor.feature2, i + 1);
+            reports.push_back(a);
         }
-    } return AnomalyReport("", 0);
+    } return reports;
 }
 
 /**

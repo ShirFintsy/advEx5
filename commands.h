@@ -118,6 +118,7 @@ public:
         dio->write("\n");
         float newThreshold;
         while (true) {
+            dio->write("Type a new threshold\n");
             dio->read(&newThreshold);
             if (newThreshold <= 1 && newThreshold >= 0) break;
             dio->write("please choose a value between 0 and 1.\n");

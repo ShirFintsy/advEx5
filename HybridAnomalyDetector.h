@@ -16,7 +16,7 @@ public:
     virtual ~HybridAnomalyDetector();
     virtual
     correlatedFeatures create_cor_feature_cir(float pear, int feature1, int feature2, const TimeSeries &ts) override;
-    virtual AnomalyReport check_if_inside(const TimeSeries &ts, const correlatedFeatures &cor) override;
+    virtual vector<AnomalyReport> check_if_inside(const TimeSeries &ts, const correlatedFeatures &cor) override;
 };
 
 #endif /* HYBRIDANOMALYDETECTOR_H_ */

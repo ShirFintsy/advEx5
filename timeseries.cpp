@@ -10,9 +10,9 @@
  * Constructor.
  * @param CSVfileName - file name
  */
-TimeSeries::TimeSeries(const char* CSVfileName) : csvFname(CSVfileName){
+TimeSeries::TimeSeries(const char* CSVfileName) : csvName(CSVfileName){
     // open the file and check if valid:
-    ifstream myFile(csvFname);
+    ifstream myFile(csvName);
     if(!myFile.is_open()) throw std::runtime_error("Could not open file");
     string stringHeadLine;
     // get the first line of the file (the headlines):
