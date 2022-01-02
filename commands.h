@@ -1,4 +1,8 @@
-
+/*
+ * Assignment 5
+ * Shir Fintsy 206949075
+ * Ohad Marmor 207481524
+ */
 
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
@@ -25,17 +29,14 @@ public:
     virtual ~DefaultIO(){}
     int saveFile(string csvFile) {// need to check this func
 
-        ifstream file(csvFile);
-        if(!file.is_open()) throw std::runtime_error("Could not open file");
-        string reader;
-
+        ofstream out(csvFile);
+        string s="";
         int numOfLines = -2;
-        while(reader != "done"){
+        while((s=read())!="done"){
+            out<<s<<endl;
             numOfLines++;
-            getline(file, reader);
-            reader = read();
         }
-        file.close();
+        out.close();
         return numOfLines;
     }
 };

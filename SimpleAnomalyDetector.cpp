@@ -1,5 +1,5 @@
 /*
- * Assignment 4
+ * Assignment 5
  * Shir Fintsy 206949075
  * Ohad Marmor 207481524
  */
@@ -154,7 +154,6 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
         }
 
         else { // not a circle detector
-            //AnomalyReport s = check_if_detect(ts, i);
             vector<AnomalyReport> reportsList = check_if_detect(ts, i);
             for (AnomalyReport s: reportsList){
                 if (s.timeStep != 0) {
@@ -177,15 +176,12 @@ vector<AnomalyReport> check_if_detect(const TimeSeries &ts, const correlatedFeat
     int sizeOfFeature = ts.get_column_by_head(cor.feature1).size();
     // create line of new info from test ts:
     Line line = cor.lin_reg;
-    //Line line = find_linear_reg(ts, cor.feature1, cor.feature2);
 
     for (int i = 0; i < sizeOfFeature; i++) {
         // create point from line cor in feature 1 and line cor in feature 2.
         Point p = Point(ts.get_column_by_head(cor.feature1)[i],
                         ts.get_column_by_head(cor.feature2)[i]);
 
-        //debug:
-        float devi = dev(p, line);
         if (cor.threshold < dev(p, line)) {
             AnomalyReport a(cor.feature1 + "-" + cor.feature2, i + 1);
             reports.push_back(a);
